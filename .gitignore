@@ -2,3 +2,4 @@ how_env.txt
 .env
 venv
 test.ipynb
+__pycache__/
