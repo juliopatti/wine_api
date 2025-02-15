@@ -18,7 +18,7 @@ class RegressionWinePredictor(MethodView):
     def post(self, request_data):    
         
         # Verificação de segurança
-        logging.info('\nVerificacao de Seguranca no WinePredictor')
+        logging.info('\nVerificacao de Seguranca no RegressionWinePredictor')
         verify_authorization(request.headers.get('Authorization'))
         
         df_sample = pd.DataFrame([request_data])
