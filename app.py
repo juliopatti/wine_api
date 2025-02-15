@@ -17,8 +17,6 @@ def create_app():
     app.config["PROPAGATE_EXCEPTIONS"] = True
 
     api = Api(app)
-    
-    
     api.register_blueprint(RecommendationBluePrint)
     api.register_blueprint(PredictionBluePrint)
     api.register_blueprint(RegressionBluePrint)

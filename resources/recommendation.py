@@ -3,25 +3,26 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 import pandas as pd
 from ml_models.models import WineModel
-from schemas import BlindClassificationWine, WineClassified
+from schemas import BlindClassificationWine, RecommendationInput, RecommendationOutput
 
+refuse_rec = 'Cilada Bino! Não recomendo este vinho.'
+neutral_rec = 'Glória Pires: Não sei opinar/O vinho pode ser bom, ou não, segundo os critérios adotados'
 
-blp = Blueprint("Recommendation", __name__, description="Operations with dropper wines recomendation")
+blp = Blueprint("Recommendation", __name__, description="Não recomendar o vinho ou não opinar.")
 
 @blp.route("/recomendation") # http://127.0.0.1:5000/recomendation
 class WineDropper(MethodView):
-    @blp.arguments(WineClassified)        # Obs preferi permitir os campos dos classificados
-    @blp.response(201, WineClassified)
+    @blp.arguments(RecommendationInput) 
+    @blp.response(201, RecommendationOutput)
     def post(self, request_data):
-        # request_data = request.get_json()
         df_sample = pd.DataFrame([request_data])
         recomendation_model = WineModel('recommendation_model.pkl')
-        pred = recomendation_model.predict(df_sample)[0]
-        if pred==0:
-            answer = 'Cilada Bino! Não recomendo este vinho.'
-        else:
-            answer = 'Glória Pires: Não sei opinar/O vinho pode ser bom, ou não, segundo os critérios adotados'
-        request_data["recommendation"] = answer
-        return request_data
+        pred_df = recomendation_model.predict(df_sample)
+        pred_df.loc[pred_df['bin_pred']==1, 'bin_pred'] = neutral_rec
+        pred_df.loc[pred_df['bin_pred']==0, 'bin_pred'] = refuse_rec
+        pred_df['recommendation'] = pred_df['bin_pred'].copy()
+        pred_df.drop(columns=['bin_pred'], inplace=True)
+        
+        return pred_df.to_dict(orient='records')[0]
         
 
