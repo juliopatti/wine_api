@@ -9,9 +9,9 @@ def load_model(path_model):
         model = pickle.load(arquivo)
     return model
 
-features = ["fixed acidity", "volatile acidity", "citric acid", 
-            "residual sugar","chlorides", "free sulfur dioxide", 
-            "total sulfur dioxide", "density","pH", "sulphates", 
+features = ["fixed_acidity", "volatile_acidity", "citric_acid", 
+            "residual_sugar","chlorides", "free_sulfur_dioxide", 
+            "total_sulfur_dioxide", "density", "pH", "sulphates", 
             "alcohol"]
 
 
