@@ -26,11 +26,10 @@ class WineModel:
         
     def predict(self, sample):
         sample_features = sample[self.features]
-        return self.model.predict(sample_features)
-    
-    def predict_proba(self, sample):
-        sample_features = sample[self.features]
-        return self.model.predict_proba(sample_features)
+        sample["bin_pred"] = self.model.predict(sample_features)
+        sample["bin_pred"] = sample["bin_pred"].astype(int)
+        sample = sample.drop(columns=features)
+        return sample
     
     
 # Regression
@@ -42,5 +41,8 @@ class RegressionWineModel:
         
     def predict(self, sample):
         sample_features = sample[self.features]
-        return self.model.predict(sample_features)
+        sample["quality_regression_pred"] = self.model.predict(sample_features)
+        sample["quality_regression_pred"] = sample["quality_regression_pred"].round(1)
+        print(f'\n\n\n\n\n\n\n{sample}')
+        return sample.drop(columns=features)
     
