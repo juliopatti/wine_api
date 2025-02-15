@@ -17,6 +17,7 @@ features_fields_ranges = {
 
 binary_integer_err = "O valor inteiro deve ser 0 (ruim) ou 1 (bom)."
 ten_integer_err = "O valor inteiro deve estar entre 0 e 10."
+ten_mil_integer_err = "O valor inteiro deve estar entre 0 e 10.000."
 refuse_rec = 'Cilada Bino! Não recomendo este vinho.'
 neutral_rec = 'Glória Pires: Não sei opinar/O vinho pode ser bom, ou não, segundo os critérios adotados'
 
@@ -39,7 +40,7 @@ class ClassifierPredictionWineOutput(Schema):
         validate=validate.OneOf([0, 1], error=binary_integer_err)
     )
     wine_id = fields.Int(                    # Passe um id se quiser e ele sera mantido
-        validate=validate.Range(-10000, 10000, error=ten_integer_err)
+        validate=validate.Range(-10000, 10000, error=ten_mil_integer_err)
     )
     bin_pred = fields.Int(
         required=True,
@@ -52,7 +53,7 @@ class ClassifierPredictionWineInput(BlindClassificationWine):
         validate=validate.OneOf([0, 1], error=binary_integer_err)
     )
     wine_id = fields.Int(                    # Passe um id se quiser e ele sera mantido
-        validate=validate.Range(-10000, 10000, error=ten_integer_err)
+        validate=validate.Range(-10000, 10000, error=ten_mil_integer_err)
     )
     
 ###########################################################################################
@@ -62,7 +63,7 @@ class RegressPredictionOutput(Schema):
         validate=validate.Range(0, 10, error=ten_integer_err)
     )
     wine_id = fields.Int(                
-        validate=validate.Range(-10000, 10000, error=ten_integer_err)
+        validate=validate.Range(-10000, 10000, error=ten_mil_integer_err)
     )
     quality_regression_pred = fields.Float(
         required=True,
@@ -74,7 +75,7 @@ class RegressPredictionInput(BlindClassificationWine):
         validate=validate.Range(0, 10, error=ten_integer_err)
     )
     wine_id = fields.Int(                
-        validate=validate.Range(-10000, 10000, error=ten_integer_err)
+        validate=validate.Range(-10000, 10000, error=ten_mil_integer_err)
     )
     
  ###########################################################################################   
@@ -85,7 +86,7 @@ class RecommendationOutput(Schema):
     )
 
     wine_id = fields.Int(                
-        validate=validate.Range(-10000, 10000, error=ten_integer_err)
+        validate=validate.Range(-10000, 10000, error=ten_mil_integer_err)
     )
     
     recommendation= fields.Str(
@@ -101,6 +102,6 @@ class RecommendationInput(BlindClassificationWine):
     )
 
     wine_id = fields.Int(                
-        validate=validate.Range(-10000, 10000, error=ten_integer_err)
+        validate=validate.Range(-10000, 10000, error=ten_mil_integer_err)
     )
     
