@@ -1,6 +1,10 @@
-import pickle
+from dotenv import load_dotenv
+from flask_smorest import abort
+import os
 
-def load_model(path_model):
-    with open(path_model, "rb") as arquivo:
-        model = pickle.load(arquivo)
-    return model
+def verify_authorization(token_api):
+    if os.getenv("API_TOKEN")!=token_api:
+        abort(401, message="API TOKEN inválido!")
+
+
+

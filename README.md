@@ -14,10 +14,13 @@ Para instação em windows, por exemplo, voce pode seguir os seguintes passos:
     - python.exe -m pip install --upgrade pip
  6- Instale as dependências
     - pip install -r requirements.txt
- 7- crie um arquivo ".env" para os campos FLASK_APP, FLASK_DEBUG ou demais que julgar necessário
+ 7- crie um arquivo ".env" para os campos FLASK_APP, FLASK_DEBUG, API_TOKEN ou demais que julgar necessário
     Ex: caso esteja debugando
     FLASK_APP=app
     FLASK_DEBUG=1
+    API_TOKEN=XXXXXX
+
+8- OBS: Não deixe sua API_TOKEN visível no código!
 
 # Rodar a API localmente
 Na pasta do projeto, voce pode subir a API localmente pelo comando:

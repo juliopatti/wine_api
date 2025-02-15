@@ -43,6 +43,5 @@ class RegressionWineModel:
         sample_features = sample[self.features]
         sample["quality_regression_pred"] = self.model.predict(sample_features)
         sample["quality_regression_pred"] = sample["quality_regression_pred"].round(1)
-        print(f'\n\n\n\n\n\n\n{sample}')
         return sample.drop(columns=features)
     

@@ -4,6 +4,8 @@ from flask_smorest import Blueprint, abort
 import pandas as pd
 from ml_models.models import WineModel
 from schemas import BlindClassificationWine, RecommendationInput, RecommendationOutput
+from utils import verify_authorization
+import os
 
 refuse_rec = 'Cilada Bino! Não recomendo este vinho.'
 neutral_rec = 'Glória Pires: Não sei opinar/O vinho pode ser bom, ou não, segundo os critérios adotados'
@@ -15,6 +17,10 @@ class WineDropper(MethodView):
     @blp.arguments(RecommendationInput) 
     @blp.response(201, RecommendationOutput)
     def post(self, request_data):
+        
+        # Verificação de segurança
+        verify_authorization(request.headers.get('Authorization'))
+        
         df_sample = pd.DataFrame([request_data])
         recomendation_model = WineModel('recommendation_model.pkl')
         pred_df = recomendation_model.predict(df_sample)
