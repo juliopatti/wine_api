@@ -32,3 +32,15 @@ class WineModel:
         sample_features = sample[self.features]
         return self.model.predict_proba(sample_features)
     
+    
+# Regression
+class RegressionWineModel:
+    def __init__(self, filename):
+        self.name = filename.replace('.pkl', '')
+        self.model = load_model(f'{this_dir}/{filename}')
+        self.features = features
+        
+    def predict(self, sample):
+        sample_features = sample[self.features]
+        return self.model.predict(sample_features)
+    

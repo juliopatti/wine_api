@@ -4,6 +4,7 @@ import pickle
 import pandas as pd
 from resources.recommendation import blp as RecommendationBluePrint
 from resources.predict_class import blp as PredictionBluePrint
+from resources.regression import blp as RegressionBluePrint
 
 def create_app():
     app = Flask(__name__)
@@ -20,6 +21,6 @@ def create_app():
     
     api.register_blueprint(RecommendationBluePrint)
     api.register_blueprint(PredictionBluePrint)
+    api.register_blueprint(RegressionBluePrint)
     
     return app
-
