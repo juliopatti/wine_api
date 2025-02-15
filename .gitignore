@@ -3,3 +3,4 @@ how_env.txt
 venv
 test.ipynb
 __pycache__/
+app.log

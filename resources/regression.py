@@ -2,6 +2,7 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 import pandas as pd
+import logging
 from ml_models.models import RegressionWineModel
 from schemas import BlindClassificationWine, RegressPredictionOutput, RegressPredictionInput
 from utils import verify_authorization
@@ -17,9 +18,12 @@ class RegressionWinePredictor(MethodView):
     def post(self, request_data):    
         
         # Verificação de segurança
+        logging.info('\nVerificacao de Seguranca no WinePredictor')
         verify_authorization(request.headers.get('Authorization'))
         
         df_sample = pd.DataFrame([request_data])
         predict_model = RegressionWineModel('regression_model.pkl')
+        
+        logging.info('\n\n\nPredicao do modelo de REGRESSAO\n\n\n')
         pred = predict_model.predict(df_sample)
         return pred.to_dict(orient='records')[0]

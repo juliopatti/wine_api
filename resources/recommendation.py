@@ -2,6 +2,7 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 import pandas as pd
+import logging
 from ml_models.models import WineModel
 from schemas import BlindClassificationWine, RecommendationInput, RecommendationOutput
 from utils import verify_authorization
@@ -19,10 +20,12 @@ class WineDropper(MethodView):
     def post(self, request_data):
         
         # Verificação de segurança
+        logging.info('\nVerificacao de Seguranca no WineDropper')
         verify_authorization(request.headers.get('Authorization'))
-        
         df_sample = pd.DataFrame([request_data])
         recomendation_model = WineModel('recommendation_model.pkl')
+        
+        logging.info('Predicao do modelo de recomendação')
         pred_df = recomendation_model.predict(df_sample)
         pred_df.loc[pred_df['bin_pred']==1, 'bin_pred'] = neutral_rec
         pred_df.loc[pred_df['bin_pred']==0, 'bin_pred'] = refuse_rec

@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_smorest import Api
-import pickle
+import logging
 import pandas as pd
 from resources.recommendation import blp as RecommendationBluePrint
 from resources.predict_class import blp as PredictionBluePrint
@@ -19,6 +19,11 @@ def create_app():
     app.config["OPENAPI_SWAGGER_UI_URL"] = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/'
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TOKEN"] = os.getenv("API_TOKEN")
+    
+     # Configurar o logger
+    logging.basicConfig(filename='app.log',
+                        level=logging.DEBUG,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     api = Api(app)
     api.register_blueprint(RecommendationBluePrint)

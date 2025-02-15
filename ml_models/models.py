@@ -1,5 +1,6 @@
 import pickle
 import os
+import logging
 
 
 this_dir = os.path.dirname(os.path.abspath(__file__))
@@ -42,6 +43,8 @@ class RegressionWineModel:
     def predict(self, sample):
         sample_features = sample[self.features]
         sample["quality_regression_pred"] = self.model.predict(sample_features)
+        
+        logging.info('\nArredondamento modelo de Regressao\n')
         sample["quality_regression_pred"] = sample["quality_regression_pred"].round(1)
         return sample.drop(columns=features)
     
