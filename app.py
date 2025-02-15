@@ -9,7 +9,7 @@ from resources.regression import blp as RegressionBluePrint
 def create_app():
     app = Flask(__name__)
     app.config['API_TITLE'] = "Wine API"
-    app.config['API_VERSION'] = "v1.3"
+    app.config['API_VERSION'] = "v3"
     app.config["OPENAPI_VERSION"] = "3.0.3"
     app.config["OPENAPI_URL_PREFIX"] = "/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui" # http://127.0.0.1:5000/swagger-ui

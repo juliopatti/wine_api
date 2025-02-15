@@ -1,0 +1,9 @@
+python-dotenv==1.0.1
+pandas==2.2.3
+scikit-learn==1.6.1
+lightgbm==4.5.0
+scikit-optimize==0.10.2
+imbalanced-learn==0.13.0
+Flask==3.0.3
+Flask-RESTful==0.3.10
+flask-smorest==0.45.0
