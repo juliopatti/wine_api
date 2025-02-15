@@ -1,39 +1,25 @@
 from flask import Flask, request
+from flask_smorest import Api
 import pickle
 import pandas as pd
+from resources.recommendation import blp as RecommendationBluePrint
+from resources.predict_class import blp as PredictionBluePrint
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    app.config['API_TITLE'] = "Wine API"
+    app.config['API_VERSION'] = "v1.3"
+    app.config["OPENAPI_VERSION"] = "3.0.3"
+    app.config["OPENAPI_URL_PREFIX"] = "/"
+    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui" # http://127.0.0.1:5000/swagger-ui
+    app.config["OPENAPI_SWAGGER_UI_URL"] = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/'
+    app.config["PROPAGATE_EXCEPTIONS"] = True
 
-
-path_predict_model = "ml_models/predict_model.pkl"
-with open(path_predict_model, "rb") as arquivo:
-    predict_model = pickle.load(arquivo)
+    api = Api(app)
     
-path_predict_model = "ml_models/recomendation_model.pkl"
-with open(path_predict_model, "rb") as arquivo:
-    recomendation_model = pickle.load(arquivo)
     
-features = ["fixed acidity", "volatile acidity", "citric acid", 
-            "residual sugar","chlorides", "free sulfur dioxide", 
-            "total sulfur dioxide", "density","pH", "sulphates", 
-            "alcohol"]
+    api.register_blueprint(RecommendationBluePrint)
+    api.register_blueprint(PredictionBluePrint)
+    
+    return app
 
-@app.post("/predict") # /recomendation
-def pred_wine():     
-    request_data = request.get_json()
-    df_sample = pd.DataFrame([request_data])[features]
-    pred = predict_model.predict(df_sample)[0]
-    request_data["PRED"] = int(pred)
-    return request_data, 201
-
-@app.post("/recomendation") # /recomendation
-def wine_dropper():     
-    request_data = request.get_json()
-    df_sample = pd.DataFrame([request_data])[features]
-    pred = recomendation_model.predict(df_sample)[0]
-    if pred==0:
-        answer = 'Cilada Bino! Não recomendo este vinho.'
-    else:
-        answer = 'Glória Pires: Não sei opinar/O vinho pode ser bom, ou não, segundo os critérios adotados'
-    request_data["Recomendation"] = answer
-    return request_data, 201
